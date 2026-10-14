@@ -1,0 +1,26 @@
+{
+  "id": "mass-token-drop",
+  "title": "Mass Token Drop",
+  "description": "Drop multiple tokens into a scene at once using a quick-select dialog. Pick actors, set quantities, and place them in formation or randomly.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "ronsterama"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/mass-token-drop.css"
+  ],
+  "languages": [],
+  "flags": {},
+  "url": "https://github.com/ronsterama/mass-token-drop",
+  "manifest": "https://github.com/ronsterama/mass-token-drop/releases/latest/download/module.json",
+  "download": "https://github.com/ronsterama/mass-token-drop/releases/download/v1.0.0/module.zip"
+}
