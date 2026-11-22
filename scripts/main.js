@@ -6,6 +6,30 @@
 const MODULE_ID = "mass-token-drop";
 
 // ─────────────────────────────────────────────
+//  Prototype guard
+//  Some module adds enumerable functions (subarray, set) to Array.prototype.
+//  CoC7 9.x iterates arrays with for...in, so those show up as fake entries and
+//  break the skill cache ("Loading Matching Items" hangs) and the world migration.
+//  Make any such additions non-enumerable; the functions themselves keep working.
+// ─────────────────────────────────────────────
+
+function hideEnumerablePrototypeAdditions() {
+  for (const proto of [Array.prototype, Object.prototype]) {
+    for (const key in proto) {
+      if (!Object.prototype.hasOwnProperty.call(proto, key)) continue;
+      const desc = Object.getOwnPropertyDescriptor(proto, key);
+      if (!desc?.enumerable || !desc.configurable) continue;
+      Object.defineProperty(proto, key, { ...desc, enumerable: false });
+      console.warn(`${MODULE_ID} | Made ${proto === Array.prototype ? "Array" : "Object"}.prototype.${key} non-enumerable (it broke for...in loops)`);
+    }
+  }
+}
+
+hideEnumerablePrototypeAdditions();
+Hooks.once("init", hideEnumerablePrototypeAdditions);
+Hooks.once("setup", hideEnumerablePrototypeAdditions);
+
+// ─────────────────────────────────────────────
 //  Application (v14 ApplicationV2)
 // ─────────────────────────────────────────────
 
