@@ -464,9 +464,25 @@ Hooks.once("ready", () => {
 
 // Add button to Token Controls (Scene Layer toolbar)
 Hooks.on("getSceneControlButtons", (controls) => {
+  // v13+: controls is an object keyed by name ("tokens"), tools is an object keyed by name.
+  if (!Array.isArray(controls)) {
+    const tokenControls = controls.tokens ?? controls.token;
+    if (!tokenControls?.tools) return;
+    tokenControls.tools["mass-token-drop"] = {
+      name: "mass-token-drop",
+      title: "Mass Token Drop",
+      icon: "fas fa-layer-group",
+      button: true,
+      order: Object.keys(tokenControls.tools).length,
+      onChange: () => openMassTokenDrop(),
+      visible: game.user.isGM,
+    };
+    return;
+  }
+
+  // v12: controls is an array, tools is an array.
   const tokenControls = controls.find((c) => c.name === "token");
   if (!tokenControls) return;
-
   tokenControls.tools.push({
     name: "mass-token-drop",
     title: "Mass Token Drop",
